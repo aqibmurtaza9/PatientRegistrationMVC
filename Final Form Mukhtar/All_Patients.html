@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Patient Detail</title>
+
+<link href="attachments/boot-strap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="attachments/form_work.css" rel="stylesheet" type="text/css"/>
+<script src="attachments/boot-strap/JQuery/jquery.js" type="text/javascript" ></script>
+<script src="attachments/boot-strap/js/bootstrap.js" type="text/javascript" ></script>
+
+</head>
+
+<body>
+<div class="container-fluid">
+<!-------page header --------->
+<nav class="navbar bg-primary">
+    <div class="navbar-header bg-primary">
+      <a id="page_name" class="navbar-brand  bg-primary" href="#">PATIENT LIST</a>
+    </div>
+    <ul class="nav navbar-nav pull-right bg-primary">
+    <li><a href="All_Patients.html" class="active" >Patient List</a></li>
+      <li><a href="New_Patient.html" >Register Patient</a></li>
+      <li><a href="Bill_and_Payments.html" >Bill and Payments</a></li>
+    </ul>
+</nav>
+<!-------page header finish --------->
+<div class="container">
+<!--------table----------------->
+<div class="table-responsive">
+<table class="table">
+<tr>
+<th>MR .NO</th>
+<th>NAME</th>
+<th>AGE</th>
+<th>MOBILE NO</th>
+<th>GENDER</th>
+<th>REGISTRATION DATE</th>
+<th>APPOINTMENT</th>
+<th>STATUS</th>
+<th>VIEW</th>
+</tr>
+<tr>
+<th><input type="text" class="form-control"/></th>
+<th><input type="text" class="form-control"/></th>
+<th><input type="text" class="form-control"/></th>
+<th><input type="text" class="form-control"/></th>
+<th><select class="form-control"><option>--Select--</option><option>MALE</option><option>FEMALE</option><option>OTHERS</option></select></th>
+<th><input type="text" class="form-control"/></th>
+<th><input type="text" class="form-control" readonly/></th>
+<th><select class="form-control"><option>--Select--</option><option>OPTION1</option><option>OPTION2</option><option>OPTION3</option></select></th>
+<th><input type="text" class="form-control" readonly/></th>
+</tr>
+
+<tr>
+<th>20000-12</th>
+<th>Ali</th>
+<th>26</th>
+<th>0344-8346160</th>
+<th>male</th>
+<th>23-5-2019</th>
+<th>yes</th>
+<th><input type="checkbox"/></th>
+<th><span class="glyphicon glyphicon-eye-open"></span></th>
+</tr>
+</table>
+</div>
+<!----------table----------->
+</div>
+
+</div><!------------main countaiiner-------------->
+</body>
+</html>

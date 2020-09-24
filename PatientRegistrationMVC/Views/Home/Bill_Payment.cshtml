@@ -1,0 +1,607 @@
+﻿
+@{
+    ViewBag.Title = "Bill_Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script>
+        
+   
+
+        function orderlist() {
+            $.ajax({
+                url: 'https://localhost:44301/WebService1.asmx/orderlist',
+                type: 'POST',
+                success: function (data) {
+
+                    $('#seltest').empty();
+                    $('#txtamount').empty();
+                    debugger;
+                    let si = JSON.parse(data);
+                    for (var i = 0; i < si.length; i++) {
+                        $('#seltest').append("<option fee=" + si[i][2] + " value='" + si[i][0] + "'>" + si[i][1] + "</option>")
+
+                    }
+
+                    // considerable
+
+                    $('#txtamount').val($('option:selected', $('#seltest')).attr('fee'));
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            orderlist();
+              $('#updatebtn').prop('disabled', true);
+            $('#txtqty').val(1);
+            var mrdata = localStorage["MrData"];
+
+            if (mrdata != null) {
+                 $('#updatebtn').prop('disabled', false);
+                debugger;
+                $.ajax({
+                    url: 'https://localhost:44301/WebService1.asmx/viewinfo',
+                    type: 'POST',
+                    data: { mr: mrdata },
+                    success: function (data) {
+                        debugger;
+                        var a = JSON.parse(data);
+                        $('#txtmrno').val(a[0].Mr_No);
+                        $('#txtname').val(a[0].Name);
+                        $('#txtguardian').val(a[0].Guardian);
+                        $('#txtgender').val(a[0].Gender);
+                        $('#txtmobile').val(a[0].Mobile_No);
+                        $('#txtcontact').val(a[0].Home_contact);
+                        $('#txtstatus').val(a[0].Martial_Status);
+
+                        /////////////////Date Conversion
+                       var b = a[0].DOB;
+                               var MyDate_String_Value = b;
+                    var value = new Date
+                        (
+                            parseInt(MyDate_String_Value.replace(/(^.*\()|([+-].*$)/g, ''))
+                        );
+                        var date = value.getFullYear() +
+                            "-" +
+                            (value.getMonth() < 9 ? '0' : '') + (value.getMonth() + 1) +
+                            "-" +
+                            value.getDate();
+
+                        $('#txtdob').val(date);
+                        $('#txtemail').val(a[0].Email);
+                        $('#txtcity').val(a[0].City);
+                        $('#txtcnic').val(a[0].CNIC);
+                        $('#txtaddress').val(a[0].Address);
+
+                        for (var i = 0; i < a.length ; i++) {
+
+                            var html = ' <tr>' +
+                                ' <td class="col-md-3" > <input type="hidden" value="'+a[i].Test_Code+'"/>' + a[i].Procedure + '</td > ' +
+                                ' <td class="col-md-1" id="selectqty">' + a[i].Quantity + '</td>' +
+                    ' <td class="col-md-2" id="selectamount">' + a[i].Amount + '</td>' +
+                    ' <td class="col-md-2" id="check">' + a[i].Urgent_Type + '</td>' +
+                    '  <td align="right">' +
+                    ' <button onclick="javascript:deleterow(this)" style="background-color:transparent"><span class=" gly gly_red  glyphicon glyphicon-minus-sign pull-right"></span></button>' +
+                    '   <button style="background-color:transparent"><span class="gly gly_info glyphicon glyphicon-edit"></span></button>' +
+                    ' </td>' +
+                    '</tr>'
+
+                           
+
+                            $('#selecttest').append(html);
+
+                            $("#seltest option[value=" + a[i].Test_Code + "]").remove();
+
+                        }
+                       
+
+                        parseInt($("#txttotamount").text(a[0].Total_Amount));
+                        parseInt($("#txtbalance").text(a[0].Balance_Amount));
+                        parseInt($("#txtpaid").val(a[0].Paid_Amount));
+
+                        $('#savebtn').prop('disabled', true);
+                        $('#txtmrno').prop('disabled', true);
+
+                       
+
+
+                    }
+
+                });
+
+                localStorage.removeItem("MrData");
+
+            }
+
+        });
+
+
+        // on procedure name change event , get amount data from fee variable
+        function changeprocedure() {
+            $('#txtamount').val($('option:selected', $('#seltest')).attr('fee'));
+
+        }
+
+
+        //on document ready test type and amount will be upload
+
+        function addrow() {    //onclick +    select test add in list and remove from source
+
+            var test = $('#seltest').children("option:selected").text();
+            var testvalue = $('#seltest').children("option:selected").val();
+            var qty = $('#txtqty').val();
+            var amount = $('#txtamount').val();
+
+
+            if ($('#check').is(":checked")) {
+                var value = true;
+
+                var html = ' <tr>' +
+                    ' <td class="col-md-3" > <input type="hidden" value="' + testvalue + '"/>' + test + '</td > ' +
+                    ' <td class="col-md-1" id="selectqty">' + qty + '</td>' +
+                    ' <td class="col-md-2" id="selectamount">' + amount + '</td>' +
+                    ' <td class="col-md-2" id="check">' + value + '</td>' +
+                    '  <td align="right">' +
+                    ' <button onclick="javascript:deleterow(this)" style="background-color:transparent"><span class=" gly gly_red  glyphicon glyphicon-minus-sign pull-right"></span></button>' +
+                    '   <button style="background-color:transparent"><span class="gly gly_info glyphicon glyphicon-edit"></span></button>' +
+                    ' </td>' +
+                    '</tr>'
+
+
+                //////////////////////////////////////////Append selected order
+                $('#selecttest').append(html);
+                var totamount = 0;
+                for (var i = 0; i < $('#selecttest tr').length; i++) {
+                    totamount += parseInt($('#selecttest tr').eq(i).find('td')[2].innerHTML);
+                }
+                $('#txttotamount').html(totamount);
+            }
+            else {
+
+                var value = false;
+
+                var html = ' <tr>' +
+                    ' <td class="col-md-3" > <input type="hidden" value="' + testvalue + '"/>' + test + '</td > ' +
+                    ' <td class="col-md-1" id="selectqty">' + qty + '</td>' +
+                    ' <td class="col-md-2" id="selectamount">' + amount + '</td>' +
+                    ' <td class="col-md-2" id="check">' + value + '</td>' +
+                    '  <td align="right">' +
+                    ' <button onclick="javascript:deleterow(this)" style="background-color:transparent"><span class=" gly gly_red  glyphicon glyphicon-minus-sign pull-right"></span></button>' +
+                    '   <button style="background-color:transparent"><span class="gly gly_info glyphicon glyphicon-edit"></span></button>' +
+                    ' </td>' +
+                    '</tr>'
+
+
+                //////////////////////////////////////////Append selected order
+                $('#selecttest').append(html);
+
+                var totamount = 0;
+                for (var i = 0; i < $('#selecttest tr').length; i++) {
+                    totamount += parseInt($('#selecttest tr').eq(i).find('td')[2].innerHTML);
+                }
+                $('#txttotamount').html(totamount);
+
+            }
+
+
+            ///////////////////////////////////////////// calculate balance amount
+            $(document).ready(function () {
+                $("#txtpaid").keyup(function () {
+
+                    var amount = parseInt($("#txttotamount").text());
+                    var paid = $("#txtpaid").val();
+                    var total_balance = Math.abs(paid - amount);
+                    $("#txtbalance").html(total_balance);
+
+                     if (paid > amount) {
+
+
+                         $("#savebtn").prop('disabled', true);
+                          alert("Paid Amount cannot be greater than Actual Total!");
+
+                    }
+
+                    
+                   else if (paid <= amount) {
+                      
+                        $("#savebtn").prop('disabled', false);
+                      
+
+                    }
+
+
+                });
+
+            });
+
+            $(document).ready(function () {
+                $("#txtpaid").focusout(function () {
+
+                    var amount = parseInt($("#txttotamount").text());
+                    var paid = $("#txtpaid").val();
+                   
+                    if (paid > amount) {
+                        $("#txtbalance").text("Error Occur!");
+
+                    }
+                 
+
+                });
+
+            });
+            $("#seltest option:selected").remove();
+        }
+
+
+        function deleterow(element) {
+            element.closest('tr').remove()
+        }
+
+
+        function insert() {
+            //   var MRNO = $('#txtmrno').val();
+            var NAME = $('#txtname').val();
+            var GUARDIAN = $('#txtguardian').val();
+            var GENDER = $('#txtgender').val();
+            var MOBILE = $('#txtmobile').val();
+            var HOME = $('#txtcontact').val();
+            var STATUS = $('#txtstatus').val();
+            var DOB = $('#txtdob').val();
+            var EMAIL = $('#txtemail').val();
+            var CITY = $('#txtcity').val();
+            var CNIC = $('#txtcnic').val();
+            var ADDRESS = $('#txtaddress').val();
+
+
+            $.ajax({
+                url: '/Home/insert',
+                type: 'POST',
+                data: {
+                    name: NAME, guardian: GUARDIAN, gender: GENDER, mobile: MOBILE, home: HOME, status: STATUS, dob: DOB, email: EMAIL, city: CITY, cnic: CNIC,
+                    address: ADDRESS
+
+                },
+                success: function (data) {
+
+                    var MRNO = JSON.parse(data);
+
+
+                    var TOTALAMOUNT = parseInt($("#txttotamount").text());
+                    var BALANCE = parseInt($("#txtbalance").text());
+                    var PAID = $("#txtpaid").val();
+
+                    debugger;
+                    $.ajax({
+                        url: '/Home/insertmaster',
+                        type: 'POST',
+                        data: {
+                            mrno: MRNO, totalamount: TOTALAMOUNT, balance: BALANCE, paid: PAID
+                        },
+                        success: function (data) {
+                            var INVOICE = JSON.parse(data);
+
+                            for (var i = 0; i < $('#selecttest tr').length; i++) {
+                                var tc = $('#selecttest tr').eq(i).find('td').eq(0).find('input').val();
+                                var qt = $('#selecttest tr').eq(i).find('td').eq(1).text();
+                                var am = $('#selecttest tr').eq(i).find('td').eq(2).text();
+                                var tp = $('#selecttest tr').eq(i).find('td').eq(3).val();
+
+                                debugger;
+
+                                $.ajax({
+                                    url: '/Home/insertdetail',
+                                    type: 'POST',
+                                    data: {
+                                        mrno: MRNO, invoice: INVOICE, testcode: tc, qty: qt, amount: am, urgent: tp
+                                    },
+
+                                });
+
+                            }
+                        },
+                        error: function () {
+                            alert("Oop! Your Request Failed to InsertDetail!");
+                        }
+                    });
+
+
+
+                }
+
+
+
+
+            });
+
+
+
+        }
+
+        function update() {
+            var MRNO = $('#txtmrno').val();
+            var NAME = $('#txtname').val();
+            var GUARDIAN = $('#txtguardian').val();
+            var GENDER = $('#txtgender').val();
+            var MOBILE = $('#txtmobile').val();
+            var HOME = $('#txtcontact').val();
+            var STATUS = $('#txtstatus').val();
+
+            var DOB = $('#txtdob').val();
+            var EMAIL = $('#txtemail').val();
+            var CITY = $('#txtcity').val();
+            var CNIC = $('#txtcnic').val();
+            var ADDRESS = $('#txtaddress').val();
+
+            //var TESTCODE = $('#seltest').val();
+            //var QUANTITY = $('#txtqty').val();
+            //var AMOUNT = $('#txtamount').val();
+            //var URGENT = $('#check').val();
+
+            //var TOTALAMOUNT = parseInt($("#txttotamount").text());
+            //var BALANCE = parseInt($("#txtbalance").text());
+            //var PAID = $("#txtpaid").val();
+
+            debugger;
+
+            $.ajax({
+                url: 'https://localhost:44301/Home/update',
+                type: 'POST',
+                data: {
+                    mrno: MRNO, name: NAME, guardian: GUARDIAN, gender: GENDER, mobile: MOBILE, home: HOME, status: STATUS, dob: DOB, email: EMAIL, city: CITY, cnic: CNIC,
+                    address: ADDRESS
+                    //, testcode: TESTCODE, qty: QUANTITY, amount: AMOUNT, urgent: URGENT, totalamount: TOTALAMOUNT, balance: BALANCE, paid: PAID
+
+                },
+                success: function () {
+
+
+                }
+
+
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <h4 class="bg-info">Bill_Payment</h4>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+
+            <p>Welcome <b>@WebSecurity.CurrentUserName</b> - <a href='@Url.Action("SignOut","Account")'>SignOut</a></p>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+            {
+                @Html.ActionLink("Register New User", "Register", "Account") <span> | </span>
+
+            }
+            @Html.ActionLink("Change Password", "ChangePassword", "Account")
+            <br />
+            <div class="panel panel-primary  thumbnail">
+                <div class="panel-heading alert heading">
+                    Patient Detail
+                    <button class="button"> <a href="New_Patient.html" style="color:#FFF;"><span class="  glyphicon glyphicon-plus-sign pull-right"></span></a></button>
+                </div>
+                <form>
+                    <div class="panel-body">
+                        <h4>Search</h4>
+                        <select class="form-control">
+                            <option>Patient Name 01</option>
+                            <option>Patient Name 02</option>
+                            <option>Patient Name 03</option>
+                            <option>Patient Name 04</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="panel-body">
+
+                    <!---------------------------------------------<h1>Laboratary Test Requisition </h1>----------------------->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>MR No.</label>
+                            <input class="form-control" id="txtmrno" placeholder="MR no.." />
+
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label>Name</label>
+                            <input class="form-control" id="txtname" placeholder="Name.." />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Guardian</label>
+                            <input class="form-control" id="txtguardian" placeholder="Father/Husband Name.." />
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label>Gender</label>
+                            <select class="form-control" id="txtgender">
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
+                            </select>
+
+
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Mobile No.</label>
+                            <input class="form-control" id="txtmobile" placeholder="Mobile No.." />
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Home Contact</label>
+                            <input class="form-control" id="txtcontact" placeholder="Home Contact.." />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Martial_Status</label>
+                            <select class="form-control" id="txtstatus">
+                                <option value="1">Single</option>
+                                <option value="2">Married</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label>DOB</label>
+                            <input type="date" class="form-control" id="txtdob" />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Email</label>
+                            <input class="form-control" id="txtemail" placeholder="Email.." />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label>City</label>
+                            <select class="form-control" id="txtcity">
+                                <option value="1">Karachi</option>
+                                <option value="2">Lahore</option>
+                                <option value="3">Multan</option>
+                                <option value="4">Islamabad</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>CNIC NO.</label>
+                            <input class="form-control" id="txtcnic" placeholder="CNIC NO." />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+
+                            <label>Address</label><br />
+                            <textarea id="txtaddress" class="form-control"></textarea>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="col-md-8">
+            <div class="panel panel-primary thumbnail">
+                <div class="panel-heading heading">Add Orders</div>
+
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table" id="addtest">
+                            <tr><th>Procdure</th><th>Qty</th><th>Amount (RS)</th><th class="col-md-1">Urgent</th><th>Instruction</th></tr>
+                            <tr>
+                                <td class="col-md-3">
+                                    <select class="form-control" id="seltest" onchange="changeprocedure()">
+                                    </select>
+                                </td>
+                                <td class="col-md-1">
+                                    <input type="text" disabled class="form-control " onKeyUp="numbersonly(this)" id="txtqty" />
+                                </td>
+                                <td class="col-md-2">
+                                    <input type="text" disabled class="form-control" id="txtamount" />
+                                </td>
+                                <td align="center">
+                                    <input id="check" class="form-control" type="checkbox" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" data-target="#instruction" data-toggle="modal">
+                                        <span class=" glyphicon glyphicon-comment" id="instruction"></span>
+                                    </button>
+                                </td>
+
+                                <!-----------------------------------------------Popup for comment------------------------------------>
+
+                                <div class="modal fade in" id="instruction">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-primary">
+                                                <h3>Special Instruction</h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-default " data-dismiss="modal">Close</button>
+                                                <button class="btn btn-default">Save</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <!-----------------------------------------------Popup for comment------------------------------------>
+
+                                <td align="right" style="background-color:transparent">
+                                    <button onclick="addrow()"><span class="gly glyphicon glyphicon-plus-sign pull-right"></span></button>
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+                        <!--------------------------------------------------------------Add selected test --------------------->
+                        <table class="table" id="selecttest">
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary thumbnail">
+                <div class="panel-heading heading">Bill</div>
+                <form>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+
+                            <table align="right" id="bill" class=" table table-striped">
+                                <tr>
+                                    <th>Total Amount</th>
+                                    <td id="txttotamount">0</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Balance Amount</th>
+                                    <td id="txtbalance" disabled>0</td>
+                                </tr>
+                                <tr>
+                                    <th>Paid Amount</th>
+                                    <td class="col-md-3">
+                                        <input type="text"  id="txtpaid" class="form-control;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="justify"><button id="savebtn" type="button" class="btn btn-success" onclick="insert()"> Save </button>  </td>
+                                    <td align="justify"><button id="updatebtn" type="button" class="btn btn-info" onclick="update()"> Update </button>  </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<!-------page header finish --------->

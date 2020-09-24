@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Bills and Payments</title>
+<link href="attachments/boot-strap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="attachments/form_work.css" rel="stylesheet" type="text/css"/>
+<script src="attachments/boot-strap/JQuery/jquery.js" type="text/javascript" ></script>
+<script src="attachments/boot-strap/js/bootstrap.js" type="text/javascript" ></script>
+<script src="attachments/form_work_js.js" type="text/javascript"></script>
+</head>
+
+<body style="background-color:#EBEBEB;">
+<!-------page header --------->
+<div class="navbar bg-primary"> 
+<div class="navbar-header">
+<span class="main-heading h1">Hospital Name</span>
+<button class="navbar-toggle btns" data-toggle="collapse"  data-target=".nav-header">
+			<span class="sr-only">toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+</button>
+</div>
+<div class="navbar-collapse collapse nav-header">
+	<ul class="nav navbar-nav navbar-right">
+	  <li><a href="#" class="navv">PATIENT DETAIL</a></li>
+		<li><a href="#" class="navv">REGISTRATION & PAYMENT</a></li>
+	</ul>
+
+	</div>
+</div>
+
+<!-------page header finish --------->
+
+<div class=" container">
+
+
+<div class="row">
+<div class="col-md-12">
+<!--------------Patient deyail---------------->
+<div class="panel  thumbnail boders ">
+ <form>
+<div class="panel-body">
+<h4>Search</h4>
+<select  class="form-control">
+<option>Patient Name 01</option>
+<option>Patient Name 02</option>
+<option>Patient Name 03</option>
+<option>Patient Name 04</option>
+</select>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!----------- patient registration------------------------>
+
+<div class="panel  thumbnail boders">
+<div class="panel-heading heading bg-primary">Patient Detail</div>
+<div class="row">
+<div class="col-md-6 panel-body">
+<table class="table">
+
+<tr>
+<th>Name</th> <td> <input type="text" class="form-control" /></td>
+<th>Fther / Gardians Name</th> <td><input type="text" class="form-control" /></td>
+</tr>
+
+<tr>
+<th>Home Contact</th><td colspan="2"> <input type="text" class="form-control" /></td>
+<td><select class="form-control"><option>Gender</option><option>MALE</option><option>Female</option><option>Others</option></select></td>
+</tr>
+
+<tr>
+<th>City</th>
+<td><select class="form-control">
+<option>Karachi</option><option>islamabad</option><option>Lahore</option><option>Hayderabad</option></select></td>
+<th>Cnic </th><td> <input type="text" class="form-control" /></td>
+</tr>
+
+</table>
+</div>
+
+<div class="col-md-6 panel-body">
+<table class="table">
+<tr>
+<th>Mobile</th><td><input type="text" class="form-control" /></td>
+<td colspan="2"><select class="form-control">
+<option>Marital Status</option><option>Single</option><option>Married</option><option>Widows</option></select>
+</td>
+</tr>
+
+<tr>
+<th>DOB</th><td> <input type="date" class="form-control" /></td>
+<th>Email</th> <td><input type="email" class="form-control" /></td>
+</tr>
+
+<tr>
+<th>Adress</th><td colspan="3"><textarea class="form-control"></textarea></td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+<!----------- patient registration------------------------>
+
+
+<!--------------Patient detail-------------------------------->
+<div class="row">
+
+
+<div class="col-md-8">
+<div class="panel  thumbnail boders">
+<div class="panel-heading heading bg-primary">Add Orders</div>
+<form>
+<div class="panel-body">
+<div class="table-responsive">
+<table class="table">
+<tr><th>Procdure</th><th>Qty</th><th>Amount (RS)</th><th>Urgent</th><th>Instruction</th></tr>
+<tr>
+<td>
+<select class="form-control">
+<option>--Select Procdure--</option>
+<option>Option 001</option>
+<option>Option 002</option>
+<option>Option 003</option>
+<option>Option 004</option>
+</select>
+</td>
+<td><input type="text" onKeyUp="numbersonly(this)"  class="form-control"/></td>
+<td><input type="text" readonly  class="form-control"/></td>
+<td><input type="checkbox" class="form-control" style="border-radius:"/></td>
+
+<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+<span class="glyphicon glyphicon-comment" style="font-size:23px;"></span>
+</button></td>
+<td><button class="button-radius"><span class="gly  glyphicon glyphicon-plus-sign pull-right"></span></button></td>
+
+</tr>
+</table>
+</div>
+
+<table class="table">
+<tr>
+<th colspan="2">CBC & ER</th> <th>2</th> <th>1000</th> <th>
+ <button class="button-radius"><span   class="gly gly_red  glyphicon glyphicon-minus-sign pull-right"></span></button></th>
+</tr>
+<tr>
+<th colspan="2">CP (Complete Blood Picture)</th> <th>2</th> <th>1000</th> <th>
+ <button class="button-radius"><span   class="gly gly_red  glyphicon glyphicon-minus-sign pull-right"></span></button></th>
+</tr>
+</table>
+</div>
+</div>
+</form>
+</div>
+<div class="col-md-4">
+<div class="panel thumbnail boders">
+<div class="panel-heading heading bg-primary">Bill</div>
+<form>
+<div class="panel-body">
+
+<table align="right" class="table table-striped">
+<tr>
+<th>Total Amount</th> <th>10000</th>
+</tr>
+<tr>
+<th>Return Amount</th> <th>5000</th>
+</tr>
+<tr>
+<th>Balance Amount</th> <th>5000</th>
+</tr>
+<tr>
+<th>Paid Amount</th> <th>50000</th>
+</tr>
+</table>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+
+
+<!------------------model--------------------------->
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title " id="exampleModalLongTitle"><h3>Special Instructions</h3></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control" ></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--------model---------------------------->
+
+</div>
+</body>
+</html>

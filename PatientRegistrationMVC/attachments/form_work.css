@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+.glyphicon {
+		font-size:30px;
+		float:right;
+}
+
+.heading {
+	font-size:20px;
+	alignment-adjust:central;
+}
+
+#header {
+	margin-top:5px;
+}
+
+.gly{
+	color:#00C;
+	 display: inline-block;
+  float:right;
+  
+  background:none;
+  border: none;
+}
+.gly_red{
+	color:#F00;
+
+}
+
+.glyphicons{
+	font-size:30px;
+	float:right;
+}
+
+
+
+
+
+.button {
+  display: inline-block;
+  float:right;
+  
+  background: #337ab7;
+  border: none;
+}
+
+.active{
+	background-color:#FFF;
+	color:#337ab7;
+	font-size:14PX;
+	font-family:"Arial Black", Gadget, sans-serif;
+}
+.buttons{
+	margin-top:10px;
+}
+#page_name:hover{
+	color:#FFF;
+	background-color:#337ab7;
+}
+
+	
+.navbar-nav{
+	margin-right:10px;
+}
+
+ul li a{
+	color:#FFF;
+	font-size:15px;
+}

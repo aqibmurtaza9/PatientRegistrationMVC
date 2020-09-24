@@ -1,0 +1,5 @@
+D:\5 BBSYD\8 Videos lecture .Net\42 MVC 5 Lecture\MVC\PatientRegistrationMVC\.vs\PatientRegistrationMVC\v16\lut\0\b\PatientRegistrationMVC.dll.config
+D:\5 BBSYD\8 Videos lecture .Net\42 MVC 5 Lecture\MVC\PatientRegistrationMVC\.vs\PatientRegistrationMVC\v16\lut\0\b\PatientRegistrationMVC.dll
+D:\5 BBSYD\8 Videos lecture .Net\42 MVC 5 Lecture\MVC\PatientRegistrationMVC\.vs\PatientRegistrationMVC\v16\lut\0\i\PatientRegistrationMVC\Debug\PatientRegistrationMVC.csprojAssemblyReference.cache
+D:\5 BBSYD\8 Videos lecture .Net\42 MVC 5 Lecture\MVC\PatientRegistrationMVC\.vs\PatientRegistrationMVC\v16\lut\0\i\PatientRegistrationMVC\Debug\PatientRegistrationMVC.csproj.CopyComplete
+D:\5 BBSYD\8 Videos lecture .Net\42 MVC 5 Lecture\MVC\PatientRegistrationMVC\.vs\PatientRegistrationMVC\v16\lut\0\i\PatientRegistrationMVC\Debug\PatientRegistrationMVC.dll

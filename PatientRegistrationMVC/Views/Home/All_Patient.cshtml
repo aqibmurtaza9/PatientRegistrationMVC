@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "All_Patient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script>
+
+   // $(document).ready(function(){
+   //});
+    $(document).ready(function () {
+
+        $.ajax({
+
+            url: 'https://localhost:44301/WebService1.asmx/inforead',
+            type: 'POST',
+
+            success: function (data) {
+                data = JSON.parse(data);
+
+                //$('#txtmrno').val(a[0].Mr_No);
+                debugger;
+
+                for (var i = 0; i < data.length; i++) {
+
+
+                    var a = data[i].Maker_Date_Time;
+                     var MyDate_String_Value = a;
+                    var value = new Date
+                        (
+                            parseInt(MyDate_String_Value.replace(/(^.*\()|([+-].*$)/g, ''))
+                        );
+                    var date = value.getMonth() +
+                        1 +
+                        "/" +
+                        value.getDate() +
+                        "/" +
+                        value.getFullYear();
+
+                    var gen = "";
+                    if (data[i].Gender == 1) { gen = "Male" };
+                    if (data[i].Gender == 2) { gen = "Female" };
+                     if (data[i].Gender == 3) { gen = "Other" };
+
+                    var html = '<tr>'
+                    html += `<td><input type="text" readonly id="txtmrno" value=${data[i].Mr_No} class="form-control" /></td>
+                        <td><input type="text" class="form-control" value=${data[i].Name} /></td>
+                        <td><input type="text" class="form-control" value=${data[i].Guardian} /></td>
+                        <td><input type="text" class="form-control" value=${data[i].Mobile_No} /></td>
+                        <td><input class="form-control" value=${gen}></td>
+                        <td><input type="text" class="form-control" value=${date } /></td>
+                       <td><input type="text" class="form-control"  /></td>
+                        <td><a href=#" style="color:green;" data-toggle="modal" data-target="#myModal" id="txtview" onclick="viewpopup(${data[i].Mr_No })">View</a> </td>
+                        //<td><a href="#" style="color:red;" onclick="EditView(${data[i].Mr_No });">Edit</a> </td>
+                        <td></td>
+                        </tr>`;
+
+
+                    //document.getElementById("#id01").style.display='block'
+                    $('#tblData tbody').append(html);
+
+                   }
+            }
+        });
+
+    });
+
+    @*--@Html.ActionLink("View","Bill_Payment","Home",  new { blogPostId = "123" } )*@
+
+    function EditView(a) {
+
+        localStorage["MrData"] = a;
+        window.open("https://localhost:44301/Home/Bill_Payment");
+
+    }
+
+    function viewpopup(a)
+    {
+       
+
+                   debugger;       
+        var mrno = a;
+        $.ajax({
+                    url: 'https://localhost:44301/WebService1.asmx/viewinfo',
+                    type: 'POST',
+                    data: { mr: mrno },
+                    success: function (data) {
+                        debugger;
+                        var a = JSON.parse(data);
+                        $('#txtmrno1').text(a[0].Mr_No);
+                        $('#txtname1').text(a[0].Name);
+                        $('#txtguardian1').text(a[0].Guardian);
+                        
+                            var gen = "";
+                            if (a[0].Gender == 1) { gen = "Male" };
+                            if (a[0].Gender == 2) { gen = "Female" };
+                            if (a[0].Gender == 3) { gen = "Other" };
+
+                                $('#txtgender1').text(gen);
+                                $('#txtmobile1').text(a[0].Mobile_No);
+                    //            $('#txtcontact').val(a[0].Home_contact);
+                    //            $('#txtstatus').val(a[0].Martial_Status);
+
+                    //      var b = a[0].DOB;
+                    //      var MyDate_String_Value = b;
+                    //      var value = new Date
+                    //    (
+                    //        parseInt(MyDate_String_Value.replace(/(^.*\()|([+-].*$)/g, ''))
+                    //    );
+
+                    //var date = value.getMonth() +
+                    //    1 +
+                    //    "/" +
+                    //    value.getDate() +
+                    //    "/" +
+                    //        value.getFullYear();
+
+                    //    $('#txtdob').val(date);
+                        $('#txtemail1').text(a[0].Email);
+
+                        var cityname = "";
+                        if (a[0].City == 1) { cityname = "Karachi" }
+                        $('#txtcity1').text(cityname);
+                    //    $('#txtcnic').val(a[0].CNIC);
+                    //    $('#txtaddress').val(a[0].Address);
+
+                                     
+                        $('#seltest1').text(a[0].Procedure);
+                        //$('#txtqty').val();
+                        //$('#txtamount').val();
+                        //$('#URGENT_TYPE').val();
+
+                        //parseInt($("#txttotamount").text());
+                        //parseInt($("#txtbalance").text());
+                        //$("#txtpaid").val();
+                      
+                }
+
+             });
+       
+       
+                   
+                   }
+
+       
+    
+
+</script>
+<h4 class="bg-info">All_Patient</h4>
+
+<!-------page header finish --------->
+<!--------table----------------->
+
+<div class="table-responsive">
+    @*  @Html.ActionLink("View", "Bill_Payment", "Home", new { blogPostId = "123" })*@
+    <br />
+
+    <table id="tblData" class="table">
+        <thead>
+            <tr>
+                <th>MR .NO</th>
+                <th>NAME</th>
+                <th>GUARDIAN</th>
+                <th>MOBILE NO</th>
+                <th>GENDER</th>
+                <th>REGISTRATION DATE</th>
+                <th>APPOINTMENT DATE</th>
+                <th>STATUS</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @*<tr>
+                    <th><input type="text" readonly id="txtmrno" class="form-control" /></th>
+                    <th><input type="text" class="form-control" /></th>
+                    <th><input type="text" class="form-control" /></th>
+                    <th><input type="text" class="form-control" /></th>
+                    <th><select class="form-control"><option>--Select--</option><option>MALE</option><option>FEMALE</option><option>OTHERS</option></select></th>
+                    <th><input type="text" class="form-control" /></th>
+                    <th><input type="text" class="form-control" readonly /></th>
+                    <th><select class="form-control"><option>--Select--</option><option>OPTION1</option><option>OPTION2</option><option>OPTION3</option></select></th>
+                    <th><input type="text" class="form-control" readonly /></th>
+                </tr>*@
+
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+<!----------table----------->
+
+<div class="modal fade bs-example-modal-lg custom-modal" tabindex="-1"  role="dialog" aria-labelledby="myModal" aria-hidden="true" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header modal-lg">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Report</h4>
+            </div>
+            <div class="modal-body modal-lg">
+                <span style="text-decoration:underline  ; float:right"> MR No # <span id="txtmrno1"  placeholder="MR no.."></span></span>
+               
+                <div class="container">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td >
+                                    <span style="font-weight:bold">Name  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="txtname1"></span><br />
+                                    <span style="font-weight:bold">Gender </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="txtgender1"></span><br />
+                                    <span style="font-weight:bold">Contact  </span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="txtmobile1"></span><br />
+                                    <span style="font-weight:bold">Email </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="txtemail1"></span><br />
+                                    <span style="font-weight:bold">City </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="txtcity1"></span>
+                                </td>
+
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="width:200px; height:200px;margin:auto;padding-left:100px;" > 
+                <table class="table table-bordered">
+                    <thead >
+                        <tr>
+                            <th>Procedures</th>
+                            <th>Charges</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr>
+                            <td id="seltest1"></td>
+                            <td>400</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

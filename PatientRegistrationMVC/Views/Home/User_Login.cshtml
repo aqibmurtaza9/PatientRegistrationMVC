@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "User_Login";
+    Layout = "~/Views/_LayoutPage2.cshtml";
+}
+
+<script>
+
+    function myfun() {
+        var user = $('#user').val();
+        var pass = $('#pass').val();
+
+        $.ajax({
+            url: '/Home/User_Login',
+            type: 'POST',
+            data: {
+                user: user, pass: pass
+            }
+
+        });
+    }
+</script>
+
+
+<div id="login_form">
+    <div class="row">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-5">
+            <div class="panel ">
+                <div class="panel-heading"><h2 align="center" style="color:black"><b>Login In</b></h2></div>
+                <div class="panel-body">
+
+                    <div class="input-group ">
+                        <span class="input-group-addon ">
+                            <i class="glyphicon glyphicon-user "></i>
+                        </span>
+                        <input type="text" id="user" class="form-control" placeholder="USER NAME">
+                    </div>
+
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </span>
+                        <input type="text" id="pass" class="form-control" placeholder="USER PASSWORD">
+                    </div>
+
+                    <center>
+                        <br />
+                        <br />
+                        <button onclick="myfun()" class=" btn btn-primary login_btn">Login</button> &nbsp; &nbsp;<a href="#" class="alert-link">Forgetten Password</a>
+                    </center>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4"></div>
+    </div>
+</div>
